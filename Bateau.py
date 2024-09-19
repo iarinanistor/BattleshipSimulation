@@ -1,3 +1,4 @@
+import random
 
 class Bateau:
     ID_LONGUEURS_BATEAUX = {
@@ -23,8 +24,16 @@ class Bateau:
         self.nom = nom
         self.longueur = longueur
         self.position = (-1,-1)
-    
-    
-    
+        self.direction = -1
 
-    
+    def print_bateau(self):
+        print("Bateau",self.id,self.nom, self.position, self.direction,sep=" ")
+
+    def generation_aleatoire_bateau(cpt):
+        l=[]
+        for i in range(cpt):
+            nb = random.randint(0,4)
+            bateau = list(Bateau.ID_LONGUEURS_BATEAUX.keys())[nb]
+            l.append(Bateau(bateau))
+        return l
+
