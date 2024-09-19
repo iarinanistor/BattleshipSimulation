@@ -76,7 +76,6 @@ class Grille:
         x, y = bateau.position
         bateau_len = bateau.longueur
         direction = bateau.direction
-        print(self.grille)
         self.placement(x, y, direction, bateau_len, 0)
         
         
@@ -157,4 +156,6 @@ class Grille:
         for bateau in self.bateaux:
             self.place_alea(bateau)
 
+    def refresh_grille(self):
+        self.grille = np.zeros((self.TAILLE, self.TAILLE), dtype=int)
     
