@@ -25,6 +25,9 @@ class Bateau:
         self.longueur = longueur
         self.position = (-1,-1)
         self.direction = -1
+        self.status = 0  #0 - ok, 1-touche, 2- coule
+        self.touche = [0]*self.longueur
+    
 
     def print_bateau(self):
         print("Bateau",self.id,self.nom, self.position, self.direction,sep=" ")
