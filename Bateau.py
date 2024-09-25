@@ -26,8 +26,16 @@ class Bateau:
         self.position = (-1,-1)
         self.direction = -1
         self.status = 0  #0 - ok, 1-touche, 2- coule
-        self.touche = [0]*self.longueur
+        self.touche = [False]*self.longueur
     
+    def est_coule(self):
+        return all(self.touche)
+    
+    def reset_status(self):
+        self.status = 0
+        self.touche = [False]*self.longueur
+        self.position = (-1,-1)
+        self.direction = -1
 
     def print_bateau(self):
         print("Bateau",self.id,self.nom, self.position, self.direction,sep=" ")

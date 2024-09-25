@@ -31,7 +31,6 @@ def placement_specifique():
     grille.changer_direction(sous_marin,2)
     sous_marin.print_bateau()
 
-    grille.affiche()
     grille.affiche_graph()
     print("#############################")
 
@@ -45,4 +44,16 @@ def placement_aleatoire():
     g.bouger_simultanement(3)
     #g.affiche_graph()
 
-placement_aleatoire()
+def test_get_bateau():
+    g = Grille()
+    torp = Bateau('TORPILLEUR')
+    print(torp.id)
+    g.ajoute_bateau(torp)
+    g.placer_bateau(torp,(4,4),1)
+    g.affiche_graph()
+    print('#################')
+    b1 = g.getBateau(3,4)
+    print(b1.id)
+
+
+test_get_bateau()

@@ -21,6 +21,8 @@ class Grille:
             return False
         if y not in range(10):
             return False
+        if bateau.status != 0:
+            return False
 
         if direction == 1:  # SUD
             if x - bateau_len + 1 < 0:
@@ -96,6 +98,8 @@ class Grille:
     
     def place_alea(self, bateau):
         peut_placer = False
+        if bateau.status != 0:
+            peut_placer = True
         while not peut_placer:
             position = (random.randint(0, self.TAILLE - 1), random.randint(0, self.TAILLE - 1))
             direction = random.randint(1, 4)
@@ -125,6 +129,38 @@ class Grille:
                     self.placer_bateau(bateau, (x, y + bateau_len - 1), 4)
                 elif direction == 3:
                     self.placer_bateau(bateau, (x, y - bateau_len + 1), 3)
+
+    def getBateau(self, x, y):
+        # Vérifier si les coordonnées sont dans la grille
+        if x < 0 or x >= self.TAILLE or y < 0 or y >= self.TAILLE:
+            return None  # Les coordonnées sont hors de la grille
+        
+        # Parcourir tous les bateaux pour voir si un bateau occupe la position (x, y)
+        for bateau in self.bateaux:
+            bateau_len = bateau.longueur
+            bx, by = bateau.position
+            direction = bateau.direction
+            
+            # Vérifier si (x, y) est occupé par ce bateau selon sa direction
+            if direction == 1:  # SUD
+                if by == y and bx - bateau_len + 1 <= x <= bx:
+                    return bateau
+            
+            elif direction == 2:  # NORD
+                if by == y and bx <= x < bx + bateau_len:
+                    return bateau
+            
+            elif direction == 3:  # VEST
+                if bx == x and by <= y < by + bateau_len:
+                    return bateau
+            
+            elif direction == 4:  # EST
+                if bx == x and by - bateau_len + 1 <= y <= by:
+                    return bateau
+        
+        # Si aucune correspondance n'a été trouvée, retourner None
+        return None
+
 
     
     def bouger(self,bateau,nb):
