@@ -4,10 +4,11 @@ from Grille import Grille
 class Bataille:
     def __init__(self,nb_bateaux):
         b = Bateau.generation_aleatoire_bateau(nb_bateaux)
-        self.grille = Grille()
+        self.grille = grille
         self.grille.bateaux = b
         self.grille.generer_grille()
         self.tirs=[]
+        #vezi cum vrei sa faci: aleatoire sau nu
     
     def tirer(self,position):
         if position in self.tirs :
@@ -16,7 +17,12 @@ class Bataille:
         self.tirs.append(position)
         x,y = position
         bateau = self.grille.getBateau(x,y)
+        
         if bateau :
+            print("on touche la bateau ")
+            bateau.print_bateau()
+            print("#######")
+
             bx,by = bateau.position
 
             if bateau.direction==1 : #SUD

@@ -45,6 +45,9 @@ def proba_grille(grille,max_tentatives=10000):
     print('On a pas trouve une grille exactement la meme')
     return None
     
+#exercice 5 - on tire aleatoirement des positions pour les bateaux- esperqnce
+#exercice 3 nb config possibles 100*95*93*... - fara directii si alte d qsteq, doar la nr de case
+#poza 26.09
 
 
 
