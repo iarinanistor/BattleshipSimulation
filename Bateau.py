@@ -11,7 +11,7 @@ class Bateau:
     
     CPT=0
 
-    def __init__(self,nom):
+    def __init__(self,nom,position=(-1,-1),direction=-1):
         if nom not in self.ID_LONGUEURS_BATEAUX:
             raise ValueError(f"Le nom du bateau '{nom}' est invalide.")
         
@@ -23,19 +23,24 @@ class Bateau:
         self.id = id
         self.nom = nom
         self.longueur = longueur
-        self.position = (-1,-1)
-        self.direction = -1
+        self.position = position
+        self.direction = direction 
         self.status = 0  #0 - ok, 1-touche, 2- coule
         self.touche = [False]*self.longueur
+    
+    def set_position_direction(self,position,direction):
+        self.position = position
+        self.direction = direction
     
     def est_coule(self):
         return all(self.touche)
     
-    def reset_status(self):
+    def reset_status(self,positions_exactes):
         self.status = 0
         self.touche = [False]*self.longueur
-        self.position = (-1,-1)
-        self.direction = -1
+        if not positions_exactes:
+            self.position = (-1,-1)
+            self.direction = -1
 
     def print_bateau(self):
         print("Bateau",self.id,self.nom, self.position, self.direction,sep=" ")

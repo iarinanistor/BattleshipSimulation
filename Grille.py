@@ -95,6 +95,9 @@ class Grille:
         else:
             print(f"Impossible de placer {bateau.nom} ici.")
             self.placer_bateau(bateau,bateau.position,bateau.direction)
+
+    def placer_bateau_positions(self,bateau):
+        self.placer_bateau(bateau,bateau.position,bateau.direction)
     
     def place_alea(self, bateau):
         peut_placer = False
@@ -187,6 +190,20 @@ class Grille:
     
     def eq(self, grilleB):
         return np.array_equal(self.grille, grilleB.grille)
+    
+    def estVide(self):
+        return np.array_equal(self.grille, np.zeros((self.TAILLE,self.TAILLE)))
+    
+    def grille_selecte(self,bateaux):
+        self.refresh_grille()
+        self.bateaux = bateaux
+        self.generer_grille()
+
+    def grille_ancienne(self):
+        if not self.estVide():
+            return None
+        for bateau in self.bateaux:
+            self.placer_bateau_positions(bateau)
 
     def generer_grille(self):
         for bateau in self.bateaux:
