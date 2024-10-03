@@ -6,7 +6,7 @@ class Grille:
     TAILLE = 10
 
     def __init__(self):
-        self.grille = np.zeros((self.TAILLE, self.TAILLE), dtype=int)
+        self.grille = np.zeros((self.TAILLE, self.TAILLE), dtype=float)
         self.bateaux = []  
     
     def ajoute_bateau(self, bateau):
@@ -72,6 +72,23 @@ class Grille:
         elif direction == 4:  # EST
             for i in range(bateau_len):
                 self.grille[x, y - i] = val
+        
+    def ajouter_placement(self, x, y, direction, bateau_len, val):
+        if direction == 1:  # SUD
+            for i in range(bateau_len):
+                self.grille[x - i, y] += val
+
+        elif direction == 2:  # NORD
+            for i in range(bateau_len):
+                self.grille[x + i, y] += val
+
+        elif direction == 3:  # VEST
+            for i in range(bateau_len):
+                self.grille[x, y + i] += val
+
+        elif direction == 4:  # EST
+            for i in range(bateau_len):
+                self.grille[x, y - i] += val
 
     
     def effacer_bateau(self, bateau):
@@ -210,5 +227,5 @@ class Grille:
             self.place_alea(bateau)
 
     def refresh_grille(self):
-        self.grille = np.zeros((self.TAILLE, self.TAILLE), dtype=int)
+        self.grille = np.zeros((self.TAILLE, self.TAILLE), dtype=float)
     
