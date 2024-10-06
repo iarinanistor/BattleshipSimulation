@@ -265,7 +265,7 @@ class Joueur:
                     for y in range(self.bataille.grille.TAILLE):
                         if grille_simulee.grille[x,y] != 0:
                             probabilites[x,y] +=1
-        
+        probabilites /= nb_simulations
         # Moyenne sur le nombre de simulations
         total = probabilites.sum()
         if total > 0:
@@ -273,6 +273,7 @@ class Joueur:
         else:
             print("Warning: total probability is zero, skipping normalization.")
         return probabilites
+        
     
     def version_montecarlo(self,nb_sim):
         tirs = set()
