@@ -60,23 +60,23 @@ class Bataille:
             self.grille.grille_ancienne()
 
 
-if __name__=='__main__':
-    b = Bataille(0)
-    g = b.grille
-    torpi1 = Bateau('TORPILLEUR',(2,2),1)
-    g.ajoute_bateau(torpi1)
-    g.placer_bateau_positions(torpi1)
-    g.affiche_graph()
-    b.tirer((1,2))
-    print(torpi1.status,torpi1.touche)
-    print(b.victoire())
-    b.tirer((2,2))
-    t = g.getBateau(2,2)
-    print(torpi1.status,torpi1.touche)
-    print(t.status, t.touche)
-    print(t is None)
-    print(torpi1.est_coule())
-    print(b.victoire())
+# if __name__=='__main__':
+#     b = Bataille(0)
+#     g = b.grille
+#     torpi1 = Bateau('TORPILLEUR',(2,2),1)
+#     g.ajoute_bateau(torpi1)
+#     g.placer_bateau_positions(torpi1)
+#     g.affiche_graph()
+#     b.tirer((1,2))
+#     print(torpi1.status,torpi1.touche)
+#     print(b.victoire())
+#     b.tirer((2,2))
+#     t = g.getBateau(2,2)
+#     print(torpi1.status,torpi1.touche)
+#     print(t.status, t.touche)
+#     print(t is None)
+#     print(torpi1.est_coule())
+#     print(b.victoire())
 
         # def joue(self):
         #     cpt = 0

@@ -9,6 +9,7 @@ import numpy as np
 class Joueur:
     def __init__(self,nb_bateaux):
         self.bataille = Bataille(nb_bateaux)
+        self.bateaux_restants = self.bataille.grille.bateaux #juste pour montecarlo
 
 
     ###FONCTIONS VERSION ALEATOIRE
@@ -113,23 +114,25 @@ class Joueur:
     
     def ajouter_probabilite(self,grille_prob, bateau, x, y):
         grille_zero = Grille()
-        nb = Combinatoire.nb_configurations_possibles_bateau(bateau,grille_zero)
+        #nb = Combinatoire.nb_configurations_possibles_bateau(bateau,grille_zero)
         longueur = bateau.longueur
         if grille_zero.peut_placer(bateau,(x,y),2):
-                grille_prob.ajouter_placement(x,y,2,longueur,1/nb)
+                grille_prob.ajouter_placement(x,y,2,longueur,1)
         if grille_zero.peut_placer(bateau,(x,y),3):
-                grille_prob.ajouter_placement(x,y,3,longueur,1/nb)
+                grille_prob.ajouter_placement(x,y,3,longueur,1)
     
     def probabilite_bateau(self,grille_prob, bateau):
-            for x in range(grille_prob.TAILLE):
-                for y in range(grille_prob.TAILLE):
-                    self.ajouter_probabilite(grille_prob,bateau,x,y)
-    
+        for x in range(grille_prob.TAILLE):
+            for y in range(grille_prob.TAILLE):
+                self.ajouter_probabilite(grille_prob,bateau,x,y)
+        grille_prob.grille /= grille_prob.grille.sum()
+
     
     def creation_grille_proba(self,grille_prob):
         for bateau in self.bataille.grille.bateaux:
             if not bateau.est_coule():
                 self.probabilite_bateau(grille_prob,bateau)
+
 
     
 
@@ -177,33 +180,35 @@ class Joueur:
         for case in cases_touches:
             if g.grille[case[0],case[1]] == 0: #si une case touche n'est pas ocupe par une bateau
                 return False
+        return True
     
-    def peut_placer_bateau_montecarlo(self,bateau,x,y,direction,cases_touches,g):
+    def peut_placer_bateau_montecarlo(self,bateau,x,y,direction,cases_touches_non_occ,g):
         v1 = g.peut_placer(bateau,(x,y),direction)
+        if not v1: 
+            return False
         bateau_len = bateau.longueur
 
         if direction == 1 : #SUD
-            if cases_touches and not any((x-i, y) in cases_touches for i in range(bateau_len)):
+            if cases_touches_non_occ and not any((x-i, y) in cases_touches for i in range(bateau_len)):
                 return False
         elif direction == 2 : #NORD
-            if cases_touches and not any((x+i, y) in cases_touches for i in range(bateau_len)):
+            if cases_touches_non_occ and not any((x+i, y) in cases_touches for i in range(bateau_len)):
                 return False
         elif direction == 3 : #VEST
-            if cases_touches and not any((x, y+i) in cases_touches for i in range(bateau_len)):
+            if cases_touches_non_occ and not any((x, y+i) in cases_touches for i in range(bateau_len)):
                 return False
         elif direction == 4 : #EST
-            if cases_touches and not any((x, y-i) in cases_touches for i in range(bateau_len)):
+            if cases_touches_non_occ and not any((x, y-i) in cases_touches for i in range(bateau_len)):
                 return False
-        return v1
+        return True
     
-    def placements_possibles(self,bateau,grille,cases_touches):
-        places = []
+    def placements_possibles(self,bateau,grille,cases_touches_non_occ):
+        places = set()
         for x in range(grille.TAILLE):
             for y in range(grille.TAILLE):
                 for dir in range(1,5):
-                    if self.peut_placer_bateau_montecarlo(bateau,x,y,dir,cases_touches,grille):
-                        places.append((x,y,dir))
-        random.shuffle(places) #shuffle pour choisir aleatoirement
+                    if self.peut_placer_bateau_montecarlo(bateau,x,y,dir,cases_touches_non_occ,grille):
+                        places.add((x,y,dir)) 
         return places
     
     def generer_grille_aleatoire(self, bateaux_restants, grille, cases_touches):
@@ -226,10 +231,18 @@ class Joueur:
 
             position = (placement[0],placement[1])
             direction = placement[2]
+
+            present = False
+            if position in cases_touches:
+                present = True
+                cases_touches.remove(position)
+
             nouveau_g.placer_bateau(bateau,position,direction)
             nouvelle_liste_bateaux = [b for b in bateaux_restants if b != bateau]
 
             resultat = self.generer_grille_aleatoire(nouvelle_liste_bateaux, nouveau_g, cases_touches)
+            if present:
+                cases_touches.add(position)
             if resultat is not None:
                 return resultat
 
@@ -240,7 +253,7 @@ class Joueur:
         Effectue des simulations Monte-Carlo pour estimer la probabilité de présence d'un bateau sur chaque case.
         """
         probabilites = np.zeros((self.bataille.grille.TAILLE,self.bataille.grille.TAILLE))
-        bateaux_restants = self.bataille.grille.bateaux
+        bateaux_restants = self.bateaux_restants
         
         for _ in range(nb_simulations):
             grille_vide = Grille()
@@ -248,10 +261,17 @@ class Joueur:
             
             if grille_simulee is not None:
                 # Incrémenter la probabilité de chaque case qui contient un bateau
-                grille_probabilites += (grille_simulee.grille > 0).astype(int)
+                for x in range(self.bataille.grille.TAILLE):
+                    for y in range(self.bataille.grille.TAILLE):
+                        if grille_simulee.grille[x,y] != 0:
+                            probabilites[x,y] +=1
         
         # Moyenne sur le nombre de simulations
-        probabilites /= self.nb_simulations
+        total = probabilites.sum()
+        if total > 0:
+            probabilites /= total
+        else:
+            print("Warning: total probability is zero, skipping normalization.")
         return probabilites
     
     def version_montecarlo(self,nb_sim):
@@ -259,7 +279,9 @@ class Joueur:
         coups = 0
         
         while not self.bataille.victoire():
+            print(coups)
             grille_probabilites = self.creation_grille_probabilites(tirs,nb_sim)
+            print(grille_probabilites)
             x, y = np.unravel_index(np.argmax(grille_probabilites), grille_probabilites.shape)
             
             if (x, y) not in tirs:
@@ -270,7 +292,9 @@ class Joueur:
                 # Mise à jour si un bateau est coulé
                 bateau_touche = self.bataille.grille.getBateau(x, y)
                 if bateau_touche is not None and bateau_touche.est_coule():
+                    self.bateaux_restants.remove(bateau_touche)
                     print(f"Bateau coulé à la position: ({x}, {y})")
+        self.bateaux_restants = self.bataille.grille.grille
         
         return coups
 
@@ -286,23 +310,37 @@ results = j.simulation_version_aleatoire(100)
 print(results)
 j.bataille.grille.affiche_graph()
 nb_essais = 1000
+g = Grille()
+j.creation_grille_proba(g)
+print(g.grille)
+print(g.grille.sum())
+print("##########atentie monte-carlo")
+cases_touches = set()
+cases_touches.add((2,2))
+cases_touches.add((2,2))
+cases_touches.add((4,4))
+print(j.creation_grille_probabilites(cases_touches,10))
+print(j.creation_grille_probabilites(set(),10))
+print(j.version_montecarlo(10))
 
-res2 = j.simulation_version_heuristique(100)
-print(res2)
-j.bataille.grille.affiche_graph()
 
-j.graphe_distribution_heuristique(100)
 
-cpt = j.version_proba_simplifie()
-print(cpt)
-j.bataille.reset(True)
-j.bataille.grille.affiche_graph()
-cpt2 = j.version_proba_simplifie()
-print(cpt2)
+# res2 = j.simulation_version_heuristique(100)
+# print(res2)
+# j.bataille.grille.affiche_graph()
 
-# res3 = j.simulation_version_proba_simplifie(100)
-# print(res3)
+# j.graphe_distribution_heuristique(100)
 
-cases_touches = [(2, 3), (4, 5)]
-nb_simulations = 1000
+# cpt = j.version_proba_simplifie()
+# print(cpt)
+# j.bataille.reset(True)
+# j.bataille.grille.affiche_graph()
+# cpt2 = j.version_proba_simplifie()
+# print(cpt2)
+
+# # res3 = j.simulation_version_proba_simplifie(100)
+# # print(res3)
+
+# cases_touches = [(2, 3), (4, 5)]
+# nb_simulations = 1000
 

@@ -11,6 +11,10 @@ def nb_configurations_possibles_bateau(bateau,grille):
                 nb+=1
     return nb
 
+def nb_configurations_bateau_grille_vide(bateau):
+    grille = Grille()
+    return nb_configurations_possibles_bateau(bateau,grille)
+
 def nb_configurations_possibles_liste_bateaux(liste_bateaux,grille):
     if not liste_bateaux:
         return 1
@@ -40,7 +44,7 @@ def proba_grille(grille,max_tentatives=10000):
         grille_aux.generer_grille()
         #print(grille_aux.grille)
         if grille.eq(grille_aux):
-            return 1/cpt
+            return cpt
         grille_aux.refresh_grille()
     print('On a pas trouve une grille exactement la meme')
     return None
@@ -51,6 +55,15 @@ def proba_grille(grille,max_tentatives=10000):
 
 
 
+g = Grille()
+torpi = Bateau('TORPILLEUR')
+porte_avions = Bateau('PORTE_AVIONS')
+g.ajoute_bateau(torpi)
+g.placer_bateau(torpi,(4,4),1)
+g.ajoute_bateau(porte_avions)
+g.placer_bateau(porte_avions,(7,1),3)
+g.affiche_graph()
+print(proba_grille(g))
 
 # torpi = Bateau('TORPILLEUR')
 # grille_vide = Grille()
