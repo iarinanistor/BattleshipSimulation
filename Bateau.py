@@ -75,6 +75,9 @@ class Bateau:
 
         print("Bateau",self.id,self.nom, self.position, self.direction,sep=" ")
 
+    def info_bateau(self):
+        return f"Bateau {self.id} {self.nom} Position: {self.position} Direction: {self.direction}"
+
     @staticmethod
     def generation_aleatoire_bateau(cpt):
         '''

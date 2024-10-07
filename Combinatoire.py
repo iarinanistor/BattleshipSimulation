@@ -38,6 +38,21 @@ def nb_configurations_bateau_grille_vide(bateau):
     grille = Grille()  # Crée une nouvelle grille vide
     return nb_configurations_possibles_bateau(bateau,grille)
 
+def borne_superieure_configurations(grille):
+    '''
+    Calcule la borne superieure du  nombre de configurations possibles pour placer un liste des bateaux.
+
+    Args:
+        grille: un objet de type Grille représentant la grille sur laquelle on veut placer les bateaux.
+
+    Returns:
+        int : La borne superieure pour les configurations possibles.
+    '''
+    nb = 1
+    for bateau in grille.bateaux :
+        nb *= nb_configurations_bateau_grille_vide(bateau)
+    return nb
+
 def nb_configurations_possibles_liste_bateaux(liste_bateaux,grille):
     '''
      Calcule le nombre de configurations possibles pour une liste de bateaux à placer sur une grille.

@@ -337,24 +337,24 @@ class Joueur:
 
 
 
-j = Joueur(5)
-j.bataille.grille.affiche_graph()
-results = j.simulation_version_aleatoire(100)
-print(results)
-j.bataille.grille.affiche_graph()
-nb_essais = 1000
-g = Grille()
-j.creation_grille_proba(g)
-print(g.grille)
-print(g.grille.sum())
-print("##########atentie monte-carlo")
-cases_touches = set()
-cases_touches.add((2,2))
-cases_touches.add((2,2))
-cases_touches.add((4,4))
-print(j.creation_grille_probabilites(cases_touches,10))
-print(j.creation_grille_probabilites(set(),10))
-print(j.version_montecarlo(10))
+# j = Joueur(5)
+# j.bataille.grille.affiche_graph()
+# results = j.simulation_version_aleatoire(100)
+# print(results)
+# j.bataille.grille.affiche_graph()
+# nb_essais = 1000
+# g = Grille()
+# j.creation_grille_proba(g)
+# print(g.grille)
+# print(g.grille.sum())
+# print("##########atentie monte-carlo")
+# cases_touches = set()
+# cases_touches.add((2,2))
+# cases_touches.add((2,2))
+# cases_touches.add((4,4))
+# print(j.creation_grille_probabilites(cases_touches,10))
+# print(j.creation_grille_probabilites(set(),10))
+# print(j.version_montecarlo(10))
 
 
 
