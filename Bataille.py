@@ -2,29 +2,48 @@ from Bateau import Bateau
 from Grille import Grille
 
 class Bataille:
+
     def __init__(self,nb_bateaux):
+        '''
+        Initialise une instance du jeu de bataille navale avec une grille et un ensemble de bateaux.
+        Args:
+            nb_bateaux: le nombre de bateaux à générer aléatoirement pour la partie.
+        '''
+
         b = Bateau.generation_aleatoire_bateau(nb_bateaux)
         self.grille = Grille()
-        self.grille.bateaux = b
-        self.grille.generer_grille()
-        self.tirs=[]
-        #vezi cum vrei sa faci: aleatoire sau nu
+        self.grille.bateaux = b # Assignation des bateaux à la grille
+        self.grille.generer_grille() # Génération de la grille avec les bateaux
+        self.tirs=[] # Liste des tirs effectués
     
 
     
     def tirer(self,position):
+        '''
+        Permet de tirer sur une position donnée dans la grille et de mettre à jour l'état des bateaux.
+
+        Args:
+            position: un tuple (x, y) représentant les coordonnées sur lesquelles tirer.
+
+        Returns:
+            None: si le tir a déjà été effectué à cet endroit ou s'il n'y a pas de bateau.
+        '''
+        
         if position in self.tirs :
             #print("Deja tire")
+             # Tir déjà effectué à cette position
             return None
-        self.tirs.append(position)
+        
+        self.tirs.append(position) # Ajoute la position à la liste des tirs
         x,y = position
-        bateau = self.grille.getBateau(x,y)
+        bateau = self.grille.getBateau(x,y) # Obtient le bateau présent à la position, s'il y en a un
         
         if bateau :
             #print("on touche la bateau ")
             #bateau.print_bateau()
             #print("#######")
 
+            # Si un bateau est touché, on détermine la section touchée
             bx,by = bateau.position
 
             if bateau.direction==1 : #SUD
@@ -35,29 +54,50 @@ class Bataille:
                 index = y - by
             elif bateau.direction == 4:  # EST
                 index = by - y
-            bateau.touche[index] = True
+
+            bateau.touche[index] = True # Marque la section du bateau comme touchée
+
             if bateau.status == 0 :
-                bateau.status = 1
+                bateau.status = 1  # Change l'état du bateau à "touché"
+
             if bateau.est_coule():
-                bateau.status = 2
+                bateau.status = 2  # Change l'état du bateau à "coulé"
                 self.grille.effacer_bateau(bateau)
                 #bateau.print_bateau()
                 #print(" est coule")
 
     def victoire(self):
+        '''
+        Vérifie si tous les bateaux de la grille ont été coulés.
+
+        Returns:
+            bool: True si tous les bateaux sont coulés, sinon False.
+        '''
+        
         return all([b.est_coule() for b in self.grille.bateaux])
 
 
     def reset(self,positions_exactes):
-        #positions_exactes - True si on veut les positions anciennes et False sinon
-        self.grille.refresh_grille()
+        '''
+         Réinitialise la grille et les bateaux pour une nouvelle partie.
+
+        Args:
+            positions_exactes: booléen, True si on veut garder les anciennes positions des bateaux, 
+            False pour générer de nouvelles positions.
+
+        Returns:
+            None
+        '''
+
+        self.grille.refresh_grille() # Rafraîchit la grille en réinitialisant les tirs
+        
         for b in self.grille.bateaux:
-            b.reset_status(positions_exactes)
-        self.tirs=[]
+            b.reset_status(positions_exactes)  # Réinitialise l'état de chaque bateau
+        self.tirs=[] # Vide la liste des tirs
         if not positions_exactes:
-            self.grille.generer_grille()
+            self.grille.generer_grille() # Génère une nouvelle grille si on ne garde pas les anciennes positions
         else:
-            self.grille.grille_ancienne()
+            self.grille.grille_ancienne()  # Utilise les anciennes positions des bateaux si indiqué
 
 
 # if __name__=='__main__':

@@ -2,51 +2,99 @@ from Bateau import Bateau
 from Grille import Grille
 
 def nb_configurations_possibles_bateau(bateau,grille):
+    '''
+    Calcule le nombre de configurations possibles pour placer un bateau 
+    sur une grille donnée, en considérant les directions Nord et Ouest.
+
+    Args:
+        bateau: un objet de type Bateau que l'on souhaite placer sur la grille.
+        grille: un objet de type Grille représentant la grille sur laquelle on veut placer le bateau.
+
+    Returns:
+        int: Le nombre de configurations valides pour placer le bateau.
+    '''
+
     nb = 0
     for x in range(grille.TAILLE):
         for y in range(grille.TAILLE):
-            if grille.peut_placer(bateau,(x,y),2):
+            if grille.peut_placer(bateau,(x,y),2): # Vérification pour la direction Nord/Sud 
                 nb+=1
-            if grille.peut_placer(bateau,(x,y),3):
+            if grille.peut_placer(bateau,(x,y),3): # Vérification pour la direction Ouest/Est
                 nb+=1
     return nb
 
 def nb_configurations_bateau_grille_vide(bateau):
-    grille = Grille()
+    '''
+    Calcule le nombre de configurations possibles pour placer un bateau 
+    sur une grille vide.
+
+    Args:
+        bateau: un objet de type Bateau représentant le bateau que l'on souhaite placer.
+
+    Returns:
+        int: Le nombre de configurations valides pour placer le bateau sur une grille vide.
+    '''
+
+    grille = Grille()  # Crée une nouvelle grille vide
     return nb_configurations_possibles_bateau(bateau,grille)
 
 def nb_configurations_possibles_liste_bateaux(liste_bateaux,grille):
-    if not liste_bateaux:
+    '''
+     Calcule le nombre de configurations possibles pour une liste de bateaux à placer sur une grille.
+
+    Args:
+        liste_bateaux: une liste d'objets Bateau que l'on souhaite placer.
+        grille: un objet Grille représentant la grille sur laquelle les bateaux doivent être placés.
+
+    Returns:
+        int: Le nombre de configurations possibles pour placer tous les bateaux de la liste.
+    '''
+
+    if not liste_bateaux:  # Si la liste est vide, il y a une seule configuration possible
         return 1
 
     bateau = liste_bateaux[0]
     nb = 0
-    directions = [2,3]
+    directions = [2,3]  # Directions possibles : Nord/Sud (2) et Ouest/Est (3)
     
     for x in range(grille.TAILLE):
         for y in range(grille.TAILLE):
             pos = (x,y)
             for dir in directions:
                 if grille.peut_placer(bateau,pos,dir):
-                    grille.placer_bateau(bateau,pos,dir)
-                    nb += nb_configurations_possibles_liste_bateaux(liste_bateaux[1:],grille)
-                    grille.effacer_bateau(bateau)
+                    grille.placer_bateau(bateau,pos,dir)  # Place le bateau si possible
+                    nb += nb_configurations_possibles_liste_bateaux(liste_bateaux[1:],grille)  # Recursive pour le reste des bateaux
+                    grille.effacer_bateau(bateau) # Efface le bateau pour tester d'autres configurations
     return nb
 
 def proba_grille(grille,max_tentatives=10000):
+    '''
+    Calcule le nombre de tentatives nécessaires pour obtenir la même configuration de bateaux 
+    sur une grille générée aléatoirement.
+
+    Args:
+        grille: un objet Grille représentant la grille cible avec une certaine configuration de bateaux.
+        max_tentatives: un entier représentant le nombre maximum de tentatives (par défaut 10 000).
+
+    Returns:
+        int: Le nombre de tentatives nécessaires pour retrouver la même grille.
+        None: Si la même grille n'a pas été trouvée après le nombre maximal de tentatives.
+    '''
+
     bateaux = grille.bateaux
-    grille_aux = Grille()
+    grille_aux = Grille() # Grille auxiliaire pour tester les placements
     grille_aux.bateaux = bateaux
-    print(grille_aux.bateaux)
+
     cpt = 0
     while cpt <= max_tentatives:
         cpt += 1
-        grille_aux.generer_grille()
+
+        grille_aux.generer_grille() # Génère une nouvelle grille
         #print(grille_aux.grille)
-        if grille.eq(grille_aux):
-            return cpt
-        grille_aux.refresh_grille()
-    print('On a pas trouve une grille exactement la meme')
+        if grille.eq(grille_aux): # Compare les deux grilles
+            return cpt # Retourne le nombre de tentatives si elles sont identiques
+        grille_aux.refresh_grille()   # Réinitialise la grille auxiliaire pour une nouvelle tentative
+    print("On n a pas trouvé une grille exactement identique.")
     return None
     
 #exercice 5 - on tire aleatoirement des positions pour les bateaux- esperqnce

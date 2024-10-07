@@ -7,38 +7,70 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 class Joueur:
+
     def __init__(self,nb_bateaux):
+        '''
+        Initialise un joueur avec une partie de bataille navale contenant un certain nombre de bateaux.
+
+        Args:
+            nb_bateaux: Nombre de bateaux à placer sur la grille.
+        '''
+        
         self.bataille = Bataille(nb_bateaux)
-        self.bateaux_restants = self.bataille.grille.bateaux #juste pour montecarlo
+        self.bateaux_restants = self.bataille.grille.bateaux  # Utilisé pour Monte-Carlo
 
 
     ###FONCTIONS VERSION ALEATOIRE
     
     def version_aleatoire(self):
-        tirs = set()
+        '''
+        Effectue une partie avec une stratégie aléatoire, c'est-à-dire en tirant au hasard jusqu'à la victoire.
+
+        Returns:
+            coups: Nombre de coups nécessaires pour terminer la partie.
+        '''
+
+        tirs = set() # Ensemble des tirs déjà effectués
         coups = 0
         while not self.bataille.victoire():
             while True:
-                (x,y) = (random.randint(0,9),random.randint(0,9))
-                if (x,y) not in tirs: #pour pas compter les tirs donnes dans la meme position
+                (x,y) = (random.randint(0,9),random.randint(0,9)) 
+
+                if (x,y) not in tirs: # Assure que la même position n'est pas tirée deux fois
                     self.bataille.tirer((x,y))
                     coups += 1
-                    tirs.add((x,y))
+                    tirs.add((x,y)) # Ajoute le tir dans l'ensemble des tirs
                     break
+
         return coups
     
     
     def simulation_version_aleatoire(self,nb_essais,liste_bateaux = []):
+        '''
+         Simule plusieurs parties avec une stratégie aléatoire.
+
+        Args:
+            nb_essais: Nombre d'essais/simulations à réaliser.
+            liste_bateaux: Liste optionnelle de bateaux pour fixer les bateaux dans la simulation.
+
+        Returns:
+            nb_coups: Nombre total de coups dans toutes les simulations.
+            res: Liste contenant le nombre de coups pour chaque simulation.
+        '''
+        
         nb_coups = 0
         res = []
+
         if liste_bateaux != [] :
             self.bataille.grille.grille_selecte(liste_bateaux)
         
         for _ in range(nb_essais):
+
             nb = self.version_aleatoire()
             nb_coups += nb
             res.append(nb)
             self.bataille.reset(True)
+            
         return nb_coups,res
     
     def graphe_distribution_aleatoire(self,nb_essais,liste_bateaux=[]):
