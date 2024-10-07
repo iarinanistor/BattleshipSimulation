@@ -71,16 +71,19 @@ class Joueur:
             res.append(nb)
             self.bataille.reset(True)
             
-        return nb_coups,res
+        return nb_coups/nb_essais,res
     
     def graphe_distribution_aleatoire(self,nb_essais,liste_bateaux=[]):
-        nb_coups, res = self.simulation_version_aleatoire(nb_essais,liste_bateaux)
+        moyenne, res = self.simulation_version_aleatoire(nb_essais,liste_bateaux)
+        print(f"Nb moyen de coups pour avoir une victoire dans la version aleatoire : {moyenne} \n")
         plt.hist(res, bins=30, density=True, alpha=0.75, color='blue')
         plt.xlabel('Nombre de coups')
         plt.ylabel('Densité')
         plt.title('Distribution du nombre de coups pour terminer une partie')
         plt.grid(True)
         plt.show()
+
+    # res = self.simulation_version_aleatoire(nb_essais,liste_bateaux)
     
     ###FONCTIONS VERSION HEURISTIQUE
 
@@ -131,10 +134,11 @@ class Joueur:
             res.append(nb)
             nb_coups += nb
             self.bataille.reset(True)
-        return nb_coups,res
+        return nb_coups/nb_essais,res
     
     def graphe_distribution_heuristique(self,nb_essais,liste_bateaux=[]):
-        nb_coups, res = self.simulation_version_heuristique(nb_essais,liste_bateaux)
+        moyenne, res = self.simulation_version_heuristique(nb_essais,liste_bateaux)
+        print(f"Nb moyen de coups pour avoir une victoire dans la version aleatoire : {moyenne} \n")
         plt.hist(res, bins=30, density=True, alpha=0.75, color='blue')
         plt.xlabel('Nombre de coups')
         plt.ylabel('Densité')
@@ -337,7 +341,7 @@ class Joueur:
 
 
 
-# j = Joueur(5)
+j = Joueur(5)
 # j.bataille.grille.affiche_graph()
 # results = j.simulation_version_aleatoire(100)
 # print(results)
@@ -358,11 +362,12 @@ class Joueur:
 
 
 
-# res2 = j.simulation_version_heuristique(100)
-# print(res2)
-# j.bataille.grille.affiche_graph()
+res2 = j.simulation_version_heuristique(100)
+print(res2)
+j.bataille.grille.affiche_graph()
 
-# j.graphe_distribution_heuristique(100)
+j.graphe_distribution_heuristique(100)
+j.graphe_distribution_aleatoire(100)
 
 # cpt = j.version_proba_simplifie()
 # print(cpt)

@@ -77,6 +77,19 @@ class Bateau:
 
     def info_bateau(self):
         return f"Bateau {self.id} {self.nom} Position: {self.position} Direction: {self.direction}"
+    
+    @staticmethod
+    def info_bateaux(liste_bateaux):
+        st = ''
+        for bateau in liste_bateaux:
+            st += bateau.info_bateau()+"\t"
+        return st
+    
+    def nom_bateaux(liste_bateaux):
+        st = ''
+        for bateau in liste_bateaux:
+            st += f"{bateau.nom}\t"
+        return st
 
     @staticmethod
     def generation_aleatoire_bateau(cpt):

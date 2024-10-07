@@ -82,7 +82,21 @@ def nb_configurations_possibles_liste_bateaux(liste_bateaux,grille):
                     grille.effacer_bateau(bateau) # Efface le bateau pour tester d'autres configurations
     return nb
 
-def proba_grille(grille,max_tentatives=10000):
+def nb_configurations_possibles_liste_bateaux_grille_vide(liste_bateaux):
+    '''
+     Calcule le nombre de configurations possibles pour une liste de bateaux à placer sur une grille vide.
+
+    Args:
+        liste_bateaux: une liste d'objets Bateau que l'on souhaite placer.
+        grille: un objet Grille représentant la grille sur laquelle les bateaux doivent être placés.
+
+    Returns:
+        int: Le nombre de configurations possibles pour placer tous les bateaux de la liste.
+    '''
+    g = Grille()
+    return nb_configurations_possibles_liste_bateaux(liste_bateaux,g)
+
+def proba_grille(grille,max_tentatives=1000000000):
     '''
     Calcule le nombre de tentatives nécessaires pour obtenir la même configuration de bateaux 
     sur une grille générée aléatoirement.
@@ -105,12 +119,26 @@ def proba_grille(grille,max_tentatives=10000):
         cpt += 1
 
         grille_aux.generer_grille() # Génère une nouvelle grille
-        #print(grille_aux.grille)
         if grille.eq(grille_aux): # Compare les deux grilles
             return cpt # Retourne le nombre de tentatives si elles sont identiques
+            
         grille_aux.refresh_grille()   # Réinitialise la grille auxiliaire pour une nouvelle tentative
     print("On n a pas trouvé une grille exactement identique.")
     return None
+
+def estimation_nombre_grilles(grille, iterations=100):
+    cpt= 0
+    for _ in range(iterations):
+        essais = proba_grille(grille)
+        cpt += essais
+    return cpt/iterations
+
+    if nb == 0:
+        return "La grille cible n'a pas été générée, augmentez le nombre d'itérations."
+
+    proportion = nb / iterations
+    estimation_total = 1 / proportion
+    return estimation_total
     
 #exercice 5 - on tire aleatoirement des positions pour les bateaux- esperqnce
 #exercice 3 nb config possibles 100*95*93*... - fara directii si alte d qsteq, doar la nr de case
@@ -125,8 +153,20 @@ g.ajoute_bateau(torpi)
 g.placer_bateau(torpi,(4,4),1)
 g.ajoute_bateau(porte_avions)
 g.placer_bateau(porte_avions,(7,1),3)
+
+b1 = Bateau('TORPILLEUR',(9,1),3)
+b2 = Bateau('TORPILLEUR',(1,5),4)
+b3 = Bateau('PORTE_AVIONS',(4,9),1)
+b4 = Bateau('CROISEUR',(2,2),2)
+b5 = Bateau('SOUS_MARIN',(9,4),3)
 g.affiche_graph()
-print(proba_grille(g))
+print("#########")
+print(nb_configurations_possibles_liste_bateaux_grille_vide([b1,b2]))
+print(nb_configurations_bateau_grille_vide(porte_avions))
+for b in [b1,b2,b3,b4,b5]:
+    print(nb_configurations_bateau_grille_vide(b))
+#print(proba_grille(g))
+print(borne_superieure_configurations(g))
 
 # torpi = Bateau('TORPILLEUR')
 # grille_vide = Grille()
