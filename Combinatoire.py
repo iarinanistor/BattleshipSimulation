@@ -133,108 +133,108 @@ def estimation_nombre_grilles(grille, iterations=100):
         cpt += essais
     return cpt/iterations
 
-    if nb == 0:
-        return "La grille cible n'a pas été générée, augmentez le nombre d'itérations."
+    # if nb == 0:
+    #     return "La grille cible n'a pas été générée, augmentez le nombre d'itérations."
 
-    proportion = nb / iterations
-    estimation_total = 1 / proportion
-    return estimation_total
+    # proportion = nb / iterations
+    # estimation_total = 1 / proportion
+    # return estimation_total
     
 #exercice 5 - on tire aleatoirement des positions pour les bateaux- esperqnce
 #exercice 3 nb config possibles 100*95*93*... - fara directii si alte d qsteq, doar la nr de case
 #poza 26.09
 
 
+if __name__=='__main__':
+    g = Grille()
+    torpi = Bateau('TORPILLEUR')
+    porte_avions = Bateau('PORTE_AVIONS')
+    g.ajoute_bateau(torpi)
+    g.placer_bateau(torpi,(4,4),1)
+    g.ajoute_bateau(porte_avions)
+    g.placer_bateau(porte_avions,(7,1),3)
 
-g = Grille()
-torpi = Bateau('TORPILLEUR')
-porte_avions = Bateau('PORTE_AVIONS')
-g.ajoute_bateau(torpi)
-g.placer_bateau(torpi,(4,4),1)
-g.ajoute_bateau(porte_avions)
-g.placer_bateau(porte_avions,(7,1),3)
+    b1 = Bateau('TORPILLEUR',(9,1),3)
+    b2 = Bateau('TORPILLEUR',(1,5),4)
+    b3 = Bateau('PORTE_AVIONS',(4,9),1)
+    b4 = Bateau('CROISEUR',(2,2),2)
+    b5 = Bateau('SOUS_MARIN',(9,4),3)
+    g.affiche_graph()
+    print("#########")
+    print(nb_configurations_possibles_liste_bateaux_grille_vide([b1,b2]))
+    print(nb_configurations_bateau_grille_vide(porte_avions))
+    for b in [b1,b2,b3,b4,b5]:
+        print(nb_configurations_bateau_grille_vide(b))
+    #print(proba_grille(g))
+    print(borne_superieure_configurations(g))
 
-b1 = Bateau('TORPILLEUR',(9,1),3)
-b2 = Bateau('TORPILLEUR',(1,5),4)
-b3 = Bateau('PORTE_AVIONS',(4,9),1)
-b4 = Bateau('CROISEUR',(2,2),2)
-b5 = Bateau('SOUS_MARIN',(9,4),3)
-g.affiche_graph()
-print("#########")
-print(nb_configurations_possibles_liste_bateaux_grille_vide([b1,b2]))
-print(nb_configurations_bateau_grille_vide(porte_avions))
-for b in [b1,b2,b3,b4,b5]:
-    print(nb_configurations_bateau_grille_vide(b))
-#print(proba_grille(g))
-print(borne_superieure_configurations(g))
+    # torpi = Bateau('TORPILLEUR')
+    # grille_vide = Grille()
+    # print(nb_configurations_possibles_bateau(torpi,grille_vide))
 
-# torpi = Bateau('TORPILLEUR')
-# grille_vide = Grille()
-# print(nb_configurations_possibles_bateau(torpi,grille_vide))
+    # #3 echantillons
 
-# #3 echantillons
+    # #le 1er juste avec un bateau de type torpilleur
 
-# #le 1er juste avec un bateau de type torpilleur
-
-# grille_vide1 = Grille()
-# torpi1 = Bateau('TORPILLEUR')
-# # print(nb_configurations_possibles_liste_bateaux([torpi1],grille_vide1))
+    # grille_vide1 = Grille()
+    # torpi1 = Bateau('TORPILLEUR')
+    # # print(nb_configurations_possibles_liste_bateaux([torpi1],grille_vide1))
 
 
 
-# # #le 2eme avec 2 bateaux de type torpiulleur et porte-avions
+    # # #le 2eme avec 2 bateaux de type torpiulleur et porte-avions
 
-# porte_avions = Bateau('PORTE_AVIONS')
-# # l1 = [torpi1,porte_avions]
-# # print(nb_configurations_possibles_liste_bateaux(l1,grille_vide1))
+    # porte_avions = Bateau('PORTE_AVIONS')
+    # # l1 = [torpi1,porte_avions]
+    # # print(nb_configurations_possibles_liste_bateaux(l1,grille_vide1))
 
-# # #le 3eme avec 3 bateaux
-# croiseur = Bateau('CROISEUR')
-# l2 = [torpi1,porte_avions,croiseur]
-# print(str(len(l2))+" " + str(nb_configurations_possibles_liste_bateaux(l2,grille_vide1)))
-# g = Grille()
-# g.bateaux = l2
-# g.generer_grille()
-# print(g.grille)
+    # # #le 3eme avec 3 bateaux
+    # croiseur = Bateau('CROISEUR')
+    # l2 = [torpi1,porte_avions,croiseur]
+    # print(str(len(l2))+" " + str(nb_configurations_possibles_liste_bateaux(l2,grille_vide1)))
+    # g = Grille()
+    # g.bateaux = l2
+    # g.generer_grille()
+    # print(g.grille)
 
-# print(proba_grille(g,max_tentatives=2229239))
+    # print(proba_grille(g,max_tentatives=2229239))
 
-# #TEST
-# # torpi1 = Bateau('TORPILLEUR')
-# # torpi2 = Bateau('TORPILLEUR')
-# # torpi3 = Bateau('TORPILLEUR')
-# # torpi4 = Bateau('TORPILLEUR')
-# # torpi5 = Bateau('TORPILLEUR')
-# # torpi6 = Bateau('TORPILLEUR')
-# # torpi7 = Bateau('TORPILLEUR')
-# # torpi8 = Bateau('TORPILLEUR')
-# # sm1 = Bateau('SOUS_MARIN')
-# # sm2 = Bateau('SOUS_MARIN')
-# # sm3 = Bateau('SOUS_MARIN')
-# # # sm4 = Bateau('SOUS_MARIN')
-# # # sm5 = Bateau('SOUS_MARIN')
-# # porte_avions = Bateau('PORTE_AVIONS')
-# # croiseur = Bateau('CROISEUR')
-# # torpi = Bateau('TORPILLEUR')
-# # pa = Bateau('PORTE_AVIONS')
-# # pa2 = Bateau('PORTE_AVIONS')
-# # g = Grille()
-# # l2 = [torpi1,torpi2,torpi3,torpi4, torpi5,porte_avions,croiseur,torpi,pa,pa2,sm1,sm2,sm3,torpi6,torpi7,torpi8]
-# # g.bateaux = l2
-# # g.generer_grille()
-# # g.affiche_graph()
+    # #TEST
+    # # torpi1 = Bateau('TORPILLEUR')
+    # # torpi2 = Bateau('TORPILLEUR')
+    # # torpi3 = Bateau('TORPILLEUR')
+    # # torpi4 = Bateau('TORPILLEUR')
+    # # torpi5 = Bateau('TORPILLEUR')
+    # # torpi6 = Bateau('TORPILLEUR')
+    # # torpi7 = Bateau('TORPILLEUR')
+    # # torpi8 = Bateau('TORPILLEUR')
+    # # sm1 = Bateau('SOUS_MARIN')
+    # # sm2 = Bateau('SOUS_MARIN')
+    # # sm3 = Bateau('SOUS_MARIN')
+    # # # sm4 = Bateau('SOUS_MARIN')
+    # # # sm5 = Bateau('SOUS_MARIN')
+    # # porte_avions = Bateau('PORTE_AVIONS')
+    # # croiseur = Bateau('CROISEUR')
+    # # torpi = Bateau('TORPILLEUR')
+    # # pa = Bateau('PORTE_AVIONS')
+    # # pa2 = Bateau('PORTE_AVIONS')
+    # # g = Grille()
+    # # l2 = [torpi1,torpi2,torpi3,torpi4, torpi5,porte_avions,croiseur,torpi,pa,pa2,sm1,sm2,sm3,torpi6,torpi7,torpi8]
+    # # g.bateaux = l2
+    # # g.generer_grille()
+    # # g.affiche_graph()
 
-# # tor1 = Bateau('TORPILLEUR')
-# # tor2 = Bateau('TORPILLEUR')
-# # tor3 = Bateau('TORPILLEUR')
-# # s1 = Bateau('SOUS_MARIN')
-# # s2 = Bateau('SOUS_MARIN')
-# # l = [tor1,tor2,tor3,s1,s2]
-# # g1 = Grille()
-# # g1.bateaux = l
-# # g1.generer_grille()
-# # g1.affiche_graph()
-# # print(proba_grille(g1,max_tentatives=1000))
+    # # tor1 = Bateau('TORPILLEUR')
+    # # tor2 = Bateau('TORPILLEUR')
+    # # tor3 = Bateau('TORPILLEUR')
+    # # s1 = Bateau('SOUS_MARIN')
+    # # s2 = Bateau('SOUS_MARIN')
+    # # l = [tor1,tor2,tor3,s1,s2]
+    # # g1 = Grille()
+    # # g1.bateaux = l
+    # # g1.generer_grille()
+    # # g1.affiche_graph()
+    # # print(proba_grille(g1,max_tentatives=1000))
 
 
 

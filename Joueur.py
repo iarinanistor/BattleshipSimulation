@@ -76,6 +76,7 @@ class Joueur:
     def graphe_distribution_aleatoire(self,nb_essais,liste_bateaux=[]):
         moyenne, res = self.simulation_version_aleatoire(nb_essais,liste_bateaux)
         print(f"Nb moyen de coups pour avoir une victoire dans la version aleatoire : {moyenne} \n")
+        print(f"Les {nb_essais} resulats de nombre de coups qu'on a obtenu: {res}")
         plt.hist(res, bins=30, density=True, alpha=0.75, color='blue')
         plt.xlabel('Nombre de coups')
         plt.ylabel('Densité')
@@ -138,7 +139,8 @@ class Joueur:
     
     def graphe_distribution_heuristique(self,nb_essais,liste_bateaux=[]):
         moyenne, res = self.simulation_version_heuristique(nb_essais,liste_bateaux)
-        print(f"Nb moyen de coups pour avoir une victoire dans la version aleatoire : {moyenne} \n")
+        print(f"Nb moyen de coups pour avoir une victoire dans la version heuristique : {moyenne} \n")
+        print(f"Les {nb_essais} resulats de nombre de coups qu'on a obtenu: {res}")
         plt.hist(res, bins=30, density=True, alpha=0.75, color='blue')
         plt.xlabel('Nombre de coups')
         plt.ylabel('Densité')
@@ -190,25 +192,33 @@ class Joueur:
             tirs.add((x, y))  
             coups += 1
         
-            bateau_touche = self.bataille.grille.getBateau(x, y)
+            # bateau_touche = self.bataille.grille.getBateau(x, y)
         
-            if bateau_touche is not None and bateau_touche.est_coule():
-                print(f"Bateau coulé à la position: ({x}, {y})")
+            # if bateau_touche is not None and bateau_touche.est_coule():
+            #     print(f"Bateau coulé à la position: ({x}, {y})")
+        self.bataille.reset(True)
     
         return coups
+    
+    def simulation_proba_simplifie(self):
+        coups = self.version_proba_simplifie()
+        return f"Dans la version probabiliste simplifiée on a besoin de {coups} coups."
         
-    def simulation_version_proba_simplifie(self,nb_essais,liste_bateaux = []):
-        nb_coups = 0
-        res = []
-        if liste_bateaux != [] :
-            self.bataille.grille.grille_selecte(liste_bateaux)
         
-        for _ in range(nb_essais):
-            nb = self.version_proba_simplifie()
-            res.append(nb)
-            nb_coups += nb
-            self.bataille.reset(True)
-        return nb_coups,res
+    # def simulation_version_proba_simplifie(self,nb_essais,liste_bateaux = []):
+    #     nb_coups = 0
+    #     res = []
+    #     if liste_bateaux != [] :
+    #         self.bataille.grille.grille_selecte(liste_bateaux)
+        
+    #     for _ in range(nb_essais):
+    #         nb = self.version_proba_simplifie()
+    #         res.append(nb)
+    #         nb_coups += nb
+    #         self.bataille.reset(True)
+    #     return nb_coups,res
+    
+    
 
 ###FONCTIONS VERSION MONTE-CARLO
     def verifier_contraintes(self,cases_touches):
@@ -339,46 +349,47 @@ class Joueur:
 
 
 
+if __name__=='__main__':
+
+    j = Joueur(5)
+    # j.bataille.grille.affiche_graph()
+    # results = j.simulation_version_aleatoire(100)
+    # print(results)
+    # j.bataille.grille.affiche_graph()
+    # nb_essais = 1000
+    # g = Grille()
+    # j.creation_grille_proba(g)
+    # print(g.grille)
+    # print(g.grille.sum())
+    # print("##########atentie monte-carlo")
+    # cases_touches = set()
+    # cases_touches.add((2,2))
+    # cases_touches.add((2,2))
+    # cases_touches.add((4,4))
+    # print(j.creation_grille_probabilites(cases_touches,10))
+    # print(j.creation_grille_probabilites(set(),10))
+    # print(j.version_montecarlo(10))
 
 
-j = Joueur(5)
-# j.bataille.grille.affiche_graph()
-# results = j.simulation_version_aleatoire(100)
-# print(results)
-# j.bataille.grille.affiche_graph()
-# nb_essais = 1000
-# g = Grille()
-# j.creation_grille_proba(g)
-# print(g.grille)
-# print(g.grille.sum())
-# print("##########atentie monte-carlo")
-# cases_touches = set()
-# cases_touches.add((2,2))
-# cases_touches.add((2,2))
-# cases_touches.add((4,4))
-# print(j.creation_grille_probabilites(cases_touches,10))
-# print(j.creation_grille_probabilites(set(),10))
-# print(j.version_montecarlo(10))
 
+    # res2 = j.simulation_version_heuristique(100)
+    # print(res2)
+    # j.bataille.grille.affiche_graph()
 
+    # j.graphe_distribution_heuristique(100)
+    # j.graphe_distribution_aleatoire(100)
 
-res2 = j.simulation_version_heuristique(100)
-print(res2)
-j.bataille.grille.affiche_graph()
+    cpt= j.version_proba_simplifie()
+    j.bataille.grille.affiche_graph()
+    print(cpt)
+    # j.bataille.reset(True)
+    # j.bataille.grille.affiche_graph()
+    # cpt2 = j.version_proba_simplifie()
+    # print(cpt2)
 
-j.graphe_distribution_heuristique(100)
-j.graphe_distribution_aleatoire(100)
+    # # res3 = j.simulation_version_proba_simplifie(100)
+    # # print(res3)
 
-# cpt = j.version_proba_simplifie()
-# print(cpt)
-# j.bataille.reset(True)
-# j.bataille.grille.affiche_graph()
-# cpt2 = j.version_proba_simplifie()
-# print(cpt2)
-
-# # res3 = j.simulation_version_proba_simplifie(100)
-# # print(res3)
-
-# cases_touches = [(2, 3), (4, 5)]
-# nb_simulations = 1000
+    # cases_touches = [(2, 3), (4, 5)]
+    # nb_simulations = 1000
 

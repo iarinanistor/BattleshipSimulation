@@ -85,10 +85,13 @@ class Bateau:
             st += bateau.info_bateau()+"\t"
         return st
     
+    @staticmethod
     def nom_bateaux(liste_bateaux):
         st = ''
+        i = 0
         for bateau in liste_bateaux:
-            st += f"{bateau.nom}\t"
+            st += f"{i}) {bateau.nom} {bateau.id}\n"
+            i += 1
         return st
 
     @staticmethod
