@@ -80,6 +80,15 @@ class Bateau:
     
     @staticmethod
     def info_bateaux(liste_bateaux):
+        """
+        Prend une liste de bateaux et renvoie une chaîne avec les infos de chaque bateau.
+
+        Args:
+            liste_bateaux (list): Liste d'objets bateau ayant une méthode `info_bateau()`.
+
+        Returns:
+            str: Chaîne contenant les infos de chaque bateau, séparées par une tabulation.
+        """
         st = ''
         for bateau in liste_bateaux:
             st += bateau.info_bateau()+"\t"
@@ -87,6 +96,15 @@ class Bateau:
     
     @staticmethod
     def nom_bateaux(liste_bateaux):
+        """
+        Prend une liste de bateaux et renvoie une chaîne avec les noms et IDs de chaque bateau.
+
+        Args:
+            liste_bateaux (list): Liste d'objets bateau ayant un attribut `nom` et un `id`.
+
+        Returns:
+            str: Chaîne avec les noms et IDs, chaque ligne précédée d'un index.
+        """
         st = ''
         i = 0
         for bateau in liste_bateaux:

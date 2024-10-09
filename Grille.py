@@ -356,3 +356,18 @@ class Grille:
         
         self.grille = np.zeros((self.TAILLE, self.TAILLE), dtype=float)
     
+    def longueur_bateaux(self):
+        """
+        Calcule la somme des longueurs de tous les bateaux dans la grille.
+
+        Args:
+            self: L'instance de la classe qui contient une liste de bateaux (self.bateaux).
+
+        Returns:
+            int: La somme des longueurs de tous les bateaux.
+        """
+        s = 0
+        for b in self.bateaux:
+            s+=b.longueur
+        return s
+    

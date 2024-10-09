@@ -187,6 +187,7 @@ def choix_version(grille):
 
         j = Joueur(0)
         j.bataille.grille = copy.deepcopy(grille)
+        print(f"Il y a {len(grille.bateaux)} qui occupent {grille.longueur_bateaux()} cases \n")
 
         if choix == '1':
             # Jouer à la version aléatoire
